@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+   New Perspectives on XML
+   Tutorial 3
+   Case Problem 4
+
+   Map Finds For You schema
+   Author:  
+   Date:     
+
+   Filename:         orders.xsd
+   Supporting Files: orders.xml
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Define complex types for various elements -->
+
+  <!-- Complex type for name element with an optional title attribute -->
+  <xs:complexType name="nameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="title" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Complex type for address element -->
+  <xs:complexType name="addressType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string"/>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Complex type for phone element -->
+  <xs:complexType name="phoneType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string"/>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Complex type for email element -->
+  <xs:complexType name="emailType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string"/>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Complex type for item element with itemPrice and itemQty sub-elements -->
+  <xs:complexType name="itemType">
+    <xs:sequence>
+      <xs:element name="itemPrice">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:decimal">
+              <xs:attribute name="saleItem" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="itemQty" type="xs:integer"/>
+    </xs:sequence>
+    <xs:attribute name="itemNumber" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- Complex type for order element with orderDate and items sub-elements -->
+  <xs:complexType name="orderType">
+    <xs:sequence>
+      <xs:element name="orderDate" type="xs:date"/>
+      <xs:element name="items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="itemType" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="orderID" type="xs:string"/>
+    <xs:attribute name="orderBy" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- Define elements -->
+
+  <!-- Root element: customers -->
+  <xs:element name="customers">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Define customer element -->
+        <xs:element name="customer" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- Name, address, phone, email, and orders elements -->
+              <xs:element name="name" type="nameType"/>
+              <xs:element name="address" type="addressType"/>
+              <xs:element name="phone" type="phoneType"/>
+              <!-- Email element is optional (minOccurs="0") -->
+              <xs:element name="email" type="emailType" minOccurs="0"/>
+              <!-- Orders element is optional (minOccurs="0") -->
+              <xs:element name="orders" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <!-- Define order element -->
+                    <xs:element name="order" type="orderType" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <!-- Define attribute custID for customer element -->
+            <xs:attribute name="custID" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
